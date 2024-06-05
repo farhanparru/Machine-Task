@@ -6,6 +6,7 @@ router
 
 .post('/otp', otpCtrl.otp)
 .post('/user', otpCtrl.user)
+.get('/Inform',otpCtrl.InfomUser)
 
 
 

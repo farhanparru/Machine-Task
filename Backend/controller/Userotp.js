@@ -1,17 +1,14 @@
-const OTPschema = require("../model/Otpmodel");
 const userSchema = require('../model/usermodel')
+const OTPschema = require("../model/Otpmodel");
 
 module.exports = {
 
-
+// user otp
  otp:async (req, res) => {
  const { otp } = req.body;
-  
   if (otp.length !== 4) {
     return res.status(400).send('OTP must be 4 digits');  
-  }
-
-  
+  }  
     try {
 
     const existOTP = await OTPschema.findOne({otp})
@@ -26,6 +23,8 @@ module.exports = {
       res.status(400).send('Error saving OTP'); 
     }
   },
+
+// user basic Inform
 
   user:async(req,res)=>{
   const {username, email} = req.body
@@ -45,6 +44,38 @@ module.exports = {
   } catch (error) {
     res.status(400).send('Invalid user Information')
   }
+  },
+
+
+// Last get Information all 
+  InfomUser:async(req,res)=>{
+   try {
+
+    const user1 = req.body
+    const otp1 = req.body
+
+    const user = await userSchema.find(user1)
+    const otp = await OTPschema.find(otp1)
+    console.log(otp);
+    
+    if(!user){
+      return res.status(404).send('User note a found')
+    }
+
+    if(!otp){
+      return res.status(404).send('Otp note a found')
+    }
+    
+     res.status(200).json({
+      message: 'User information retrieved successfully',
+      user,
+      otp
+     })
+
+   } catch (error) {
+    res.status(500).send('An error occurred while retrieving user information.');
+    
+   }
   }
 
 
